@@ -263,15 +263,17 @@ def main():
             df_plot = df.copy()
             df_plot['Experience'] = df_plot['experience_level'].map(EXP_LEVEL_NAMES)
             fig, ax = plt.subplots(figsize=(10, 6))
-            sns.boxplot(data=df_plot, x='Experience', y='salary_usd', palette="magma", 
-                        order=[EXP_LEVEL_NAMES[o] for o in ['EN', 'MI', 'SE', 'EX'] if o in df['experience_level'].unique()], ax=ax)
+            sns.boxplot(data=df_plot, x='Experience', y='salary_usd', palette="viridis", 
+                        order=[EXP_LEVEL_NAMES[o] for o in ['EN', 'MI', 'SE', 'EX'] if o in df['experience_level'].unique()], 
+                        ax=ax, linewidth=2.5, flierprops={"marker": "x", "markeredgecolor": "white"})
             ax.set_facecolor('#0e1117')
             fig.patch.set_facecolor('#0e1117')
-            ax.tick_params(colors='white')
+            ax.tick_params(colors='white', labelsize=10)
             ax.xaxis.label.set_color('#00d4ff')
             ax.yaxis.label.set_color('#00d4ff')
+            ax.grid(axis='y', color='white', alpha=0.1, linestyle='--')
             plt.xticks(rotation=15)
-            sns.despine()
+            sns.despine(left=True, bottom=True)
             st.pyplot(fig)
 
         # Row 2: Industries and Market Velocity

@@ -692,6 +692,14 @@ def main():
                         st.write(", ".join([f"`{k}`" for k in keywords]))
 
     elif choice == "📈 Insights":
+        def clean_feature_name(name):
+            if name.startswith('industry_'): return f"Industry: {name.replace('industry_', '')}"
+            if name.startswith('company_size_'): return f"Size: {COMPANY_SIZE_NAMES.get(name.replace('company_size_', ''), name.replace('company_size_', ''))}"
+            if name.startswith('education_required_'): return f"Edu: {name.replace('education_required_', '')}"
+            if name == 'experience_encoded': return "Years of Experience / Level"
+            if name == 'remote_ratio': return "Remote Work Flexibility"
+            return name
+
         st.markdown("""
             <div style="text-align: center; padding: 20px;">
                 <h2 style="color: #00d4ff; margin-bottom: 0;">Market Intelligence Hub</h2>

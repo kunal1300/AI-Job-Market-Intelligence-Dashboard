@@ -102,3 +102,7 @@ The project was developed in 4 major phases:
 
 ## 📄 License
 This project is for educational and portfolio purposes. Feel free to use the logic and build upon it!
+
+## Streamlit link:
+[Demo For Streamlit Page ](https://aijobpredection.streamlit.app/)
+

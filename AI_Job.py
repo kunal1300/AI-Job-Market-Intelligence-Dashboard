@@ -17,7 +17,7 @@ import re
 
 # Page Config
 st.set_page_config(
-    page_title="AI Job Market Intelligence",
+    page_title="AI Job Market Intelligence | Streamlit • XGBoost • Scikit-Learn",
     page_icon="🗺️",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -214,8 +214,11 @@ def main():
     st.markdown("""
         <div class="hero-section">
             <h1 class="hero-title">🗺️ AI Job Market Intelligence</h1>
+            <p style="color: #00ff88; font-weight: 600; margin-bottom: 15px; letter-spacing: 1px;">
+                STREAMLIT • XGBOOST • SCIKIT-LEARN • PANDAS • MATPLOTLIB • SEABORN
+            </p>
             <div class="subtitle-container">
-                <p class="hero-subtitle">🚀 Advanced Analytics • 💰 Salary Prediction • 📄 CV Intelligence • 🧠 Skill Gap Analysis • 📈 Market Trends</p>
+                <p class="hero-subtitle">🚀 Advanced Analytics • 💰 Salary Prediction (XGBoost) • 📄 CV Intelligence (Cosine Similarity) • 🧠 Skill Gap Analysis • 🎯 Job Classification (XGBoost) • 📈 Market Trends</p>
             </div>
         </div>
     """, unsafe_allow_html=True)

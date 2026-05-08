@@ -77,6 +77,30 @@ st.markdown("""
         color: #00d4ff !important;
         font-weight: bold !important;
     }
+    .hero-section {
+        background: linear-gradient(135deg, rgba(75, 108, 183, 0.2) 0%, rgba(24, 40, 72, 0.4) 100%);
+        padding: 40px;
+        border-radius: 20px;
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        text-align: center;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        backdrop-filter: blur(10px);
+    }
+    .hero-title {
+        background: linear-gradient(90deg, #00d4ff, #00ff88);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 3.5rem !important;
+        font-weight: 800 !important;
+        margin-bottom: 10px;
+        letter-spacing: -1px;
+    }
+    .hero-subtitle {
+        color: #e0e0e0;
+        font-size: 1.2rem;
+        opacity: 0.8;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -157,8 +181,12 @@ def extract_text_from_file(uploaded_file):
 # --- APP UI ---
 
 def main():
-    st.title("🗺️ AI Job Market Intelligence Dashboard")
-    st.markdown("---")
+    st.markdown("""
+        <div class="hero-section">
+            <h1 class="hero-title">🗺️ AI Job Market Intelligence</h1>
+            <p class="hero-subtitle">Advanced Analytics • Salary Prediction • CV Intelligence</p>
+        </div>
+    """, unsafe_allow_html=True)
 
     # Load Data and Models
     df = load_and_preprocess_data()

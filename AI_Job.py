@@ -163,6 +163,7 @@ def main():
     # Load Data and Models
     df = load_and_preprocess_data()
     reg_model, cls_model, mlb, ohe, le, feature_names = train_models(df)
+    df_exploded = df.explode('skills_list')
 
     # Sidebar Navigation
     st.sidebar.image("https://cdn-icons-png.flaticon.com/512/2103/2103633.png", width=100)
@@ -200,7 +201,6 @@ def main():
         
         with col1:
             st.markdown("#### 🔥 Top 10 Most In-Demand Skills")
-            df_exploded = df.explode('skills_list')
             skill_counts = df_exploded['skills_list'].value_counts().head(10)
             fig, ax = plt.subplots(figsize=(10, 6))
             sns.barplot(x=skill_counts.values, y=skill_counts.index, palette="viridis", ax=ax)

@@ -707,121 +707,80 @@ def main():
             </div>
         """, unsafe_allow_html=True)
 
-        tab1, tab2, tab3 = st.tabs(["🚀 Influence Hierarchy", "💎 Skill Economy", "📈 Strategic Roadmap"])
-
-        with tab1:
-            st.markdown("#### What most influences your compensation?")
+        # Row 1: Charts
+        col_r1a, col_r1b = st.columns(2)
+        
+        with col_r1a:
+            st.markdown("#### 🚀 Influence Hierarchy")
             importances = reg_model.feature_importances_
             imp_df = pd.DataFrame({'Feature': feature_names, 'Importance': importances})
             imp_df['Display Name'] = imp_df['Feature'].apply(clean_feature_name)
-            
             top_12 = imp_df.sort_values('Importance', ascending=False).head(12)
             
-            fig, ax = plt.subplots(figsize=(12, 7))
+            fig, ax = plt.subplots(figsize=(10, 8))
             colors = plt.cm.Blues(np.linspace(0.4, 0.9, len(top_12)))
-            bars = ax.barh(top_12['Display Name'], top_12['Importance'], color=colors, edgecolor='white', linewidth=0.5)
-            
+            bars = ax.barh(top_12['Display Name'], top_12['Importance'], color=colors)
             ax.set_facecolor('none')
             fig.patch.set_facecolor('none')
             ax.invert_yaxis()
             ax.xaxis.set_visible(False)
             ax.tick_params(colors='white', length=0)
-            
-            # Add value labels
             for bar in bars:
                 width = bar.get_width()
-                ax.text(width + 0.005, bar.get_y() + bar.get_height()/2, 
-                        f'{width:.1%}', color='white', va='center', fontweight='bold')
-            
+                ax.text(width + 0.005, bar.get_y() + bar.get_height()/2, f'{width:.1%}', color='white', va='center', fontweight='bold')
             sns.despine(left=True, bottom=True)
             st.pyplot(fig)
 
-        with tab2:
-            st.markdown("#### Demand vs. Salary Premium (Strategic Value)")
-            # Calculate demand (frequency) and premium (median salary diff)
+        with col_r1b:
+            st.markdown("#### 💎 Skill Economy (Strategic Value)")
             skill_stats = []
             overall_median = df['salary_usd'].median()
-            
-            # Top 25 skills for a clean plot
             top_skills = df_exploded['skills_list'].value_counts().head(25).index
-            
             for skill in top_skills:
                 skill_data = df_exploded[df_exploded['skills_list'] == skill]
-                count = len(skill_data)
-                premium = skill_data['salary_usd'].median() - overall_median
-                skill_stats.append({'Skill': skill, 'Demand': count, 'Premium': premium})
-            
+                skill_stats.append({'Skill': skill, 'Demand': len(skill_data), 'Premium': skill_data['salary_usd'].median() - overall_median})
             stats_df = pd.DataFrame(skill_stats)
             
-            fig, ax = plt.subplots(figsize=(10, 6))
-            sns.scatterplot(data=stats_df, x='Demand', y='Premium', size='Premium', sizes=(100, 1000), 
-                            hue='Premium', palette='viridis', alpha=0.7, ax=ax)
-            
-            # Label the most interesting ones
+            fig, ax = plt.subplots(figsize=(10, 8))
+            sns.scatterplot(data=stats_df, x='Demand', y='Premium', size='Premium', sizes=(100, 800), hue='Premium', palette='viridis', alpha=0.7, ax=ax)
             for i, row in stats_df.iterrows():
-                if row['Premium'] > stats_df['Premium'].quantile(0.8) or row['Demand'] > stats_df['Demand'].quantile(0.8):
-                    ax.text(row['Demand']+10, row['Premium'], row['Skill'], color='white', alpha=0.9, fontsize=9)
-
+                if row['Premium'] > stats_df['Premium'].quantile(0.85) or row['Demand'] > stats_df['Demand'].quantile(0.85):
+                    ax.text(row['Demand']+5, row['Premium'], row['Skill'], color='white', alpha=0.8, fontsize=8)
             ax.set_facecolor('#0e1117')
             fig.patch.set_facecolor('#0e1117')
             ax.tick_params(colors='white')
-            ax.xaxis.label.set_color('#00d4ff')
-            ax.yaxis.label.set_color('#00d4ff')
             ax.set_ylabel("Salary Premium (USD)", color='white')
             ax.set_xlabel("Market Demand (Job Count)", color='white')
             ax.grid(alpha=0.1)
             st.pyplot(fig)
-            
-            st.info("💡 **Strategy:** Focus on skills in the **Top-Right** (High Demand, High Pay) for maximum career security and financial return.")
 
-        with tab3:
-            col_c1, col_c2 = st.columns(2)
-            
-            with col_c1:
-                st.markdown("""
+        st.markdown("---")
+        st.markdown("#### 📈 Strategic Roadmap")
+        
+        # Row 2: Cards
+        col_c1, col_c2 = st.columns(2)
+        with col_c1:
+            st.markdown("""
                 <div class="glass-card">
                     <div class="insight-header">🎯 The Seniority Leap</div>
-                    <p style="font-size: 0.9rem; color: #ddd;">
-                        Moving from <b>Junior (EN)</b> to <b>Senior (SE)</b> typically correlates with a 
-                        <b>145% increase</b> in median salary. Technical skills explain 40% of this gap, 
-                        while the rest is attributed to 'Domain Authority'.
-                    </p>
+                    <p style="font-size: 0.85rem; color: #ddd;">Moving from <b>Junior (EN)</b> to <b>Senior (SE)</b> correlates with a <b>145% increase</b> in median salary.</p>
                 </div>
-                """, unsafe_allow_html=True)
-                
-                st.markdown("""
                 <div class="glass-card">
                     <div class="insight-header">🌍 Remote Reality</div>
-                    <p style="font-size: 0.9rem; color: #ddd;">
-                        Hybrid roles (50% remote) currently offer a <b>7% salary premium</b> over 100% remote 
-                        roles in AI Engineering, suggesting that 'face-time' still has a high market value 
-                        for specialized technical R&D.
-                    </p>
+                    <p style="font-size: 0.85rem; color: #ddd;">Hybrid roles offer a <b>7% salary premium</b> over 100% remote roles in AI Engineering.</p>
                 </div>
-                """, unsafe_allow_html=True)
-
-            with col_c2:
-                st.markdown("""
+            """, unsafe_allow_html=True)
+        with col_c2:
+            st.markdown("""
                 <div class="glass-card">
                     <div class="insight-header">🧬 Industry Specialization</div>
-                    <p style="font-size: 0.9rem; color: #ddd;">
-                        Specializing in <b>Healthcare</b> or <b>Finance</b> AI adds an average 
-                        of <b>$22k/year</b> compared to Generalist roles, regardless of your tech stack. 
-                        Domain knowledge is the hidden multiplier.
-                    </p>
+                    <p style="font-size: 0.85rem; color: #ddd;">Specializing in <b>Healthcare</b> or <b>Finance</b> AI adds an average of <b>$22k/year</b>.</p>
                 </div>
-                """, unsafe_allow_html=True)
-                
-                st.markdown("""
                 <div class="glass-card">
                     <div class="insight-header">🎓 Education vs. Experience</div>
-                    <p style="font-size: 0.9rem; color: #ddd;">
-                        Our models show that 3 years of <b>Production Experience</b> is worth 
-                        more than a <b>Master's Degree</b> in terms of starting salary for 
-                        Applied AI roles.
-                    </p>
+                    <p style="font-size: 0.85rem; color: #ddd;">3 years of <b>Production Experience</b> is worth more than a <b>Master's Degree</b>.</p>
                 </div>
-                """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()

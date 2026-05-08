@@ -698,6 +698,14 @@ def main():
         importances = reg_model.feature_importances_
         imp_df = pd.DataFrame({'Feature': feature_names, 'Importance': importances})
         
+        def clean_feature_name(name):
+            if name.startswith('industry_'): return f"Industry: {name.replace('industry_', '')}"
+            if name.startswith('company_size_'): return f"Size: {COMPANY_SIZE_NAMES.get(name.replace('company_size_', ''), name.replace('company_size_', ''))}"
+            if name.startswith('education_required_'): return f"Edu: {name.replace('education_required_', '')}"
+            if name == 'experience_encoded': return "Years of Experience / Level"
+            if name == 'remote_ratio': return "Remote Work Flexibility"
+            return name
+
         def categorize_feature(name):
             if any(s in name for s in ['industry_', 'company_size_', 'remote_ratio']): return "Market & Context"
             if 'experience_encoded' in name: return "Seniority"

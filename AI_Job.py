@@ -97,9 +97,22 @@ st.markdown("""
         letter-spacing: -1px;
     }
     .hero-subtitle {
-        color: #e0e0e0;
-        font-size: 1.2rem;
-        opacity: 0.8;
+        color: #00d4ff;
+        font-size: 1.1rem;
+        font-weight: 500;
+        white-space: nowrap;
+        display: inline-block;
+        padding-left: 100%;
+        animation: scroll 15s linear infinite;
+    }
+    @keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+    }
+    .subtitle-container {
+        overflow: hidden;
+        width: 100%;
+        margin-top: 10px;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -184,7 +197,9 @@ def main():
     st.markdown("""
         <div class="hero-section">
             <h1 class="hero-title">🗺️ AI Job Market Intelligence</h1>
-            <p class="hero-subtitle">Advanced Analytics • Salary Prediction • CV Intelligence</p>
+            <div class="subtitle-container">
+                <p class="hero-subtitle">🚀 Advanced Analytics • 💰 Salary Prediction • 📄 CV Intelligence • 🧠 Skill Gap Analysis • 📈 Market Trends</p>
+            </div>
         </div>
     """, unsafe_allow_html=True)
 

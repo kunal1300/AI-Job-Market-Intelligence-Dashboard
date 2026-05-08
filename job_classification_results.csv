@@ -1,0 +1,4 @@
+,F1-Score (macro)
+Random Forest,0.04876388277955375
+XGBoost,0.053156564175882715
+Logistic Regression,0.046879505088907085

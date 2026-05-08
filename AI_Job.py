@@ -97,7 +97,7 @@ def load_and_preprocess_data():
     df['month_year'] = df['posting_date'].dt.to_period('M').astype(str)
     
     # Clean skills
-    df['skills_list'] = df['required_skills'].apply(lambda x: [s.strip() for s in str(x).split(',')] if pd.notnull(x) else [])
+    df['skills_list'] = df['required_skills'].apply(lambda x: tuple(s.strip() for s in str(x).split(',')) if pd.notnull(x) else ())
     
     # Filter out any zero or negative salaries
     df = df[df['salary_usd'] > 10000]
